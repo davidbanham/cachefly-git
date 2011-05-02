@@ -23,8 +23,9 @@ for i in ${REPOS[@]}
 do
   OUTPUT=`cd /home/cacheflyupdater/${REPOS[$k]}/ && git pull`
 
-# The if loop is to avoid pinging cachefly even when there's been no change to the git repo. If you're concerned about the cachefly files being updated from elsewhere you may wish to change this behaviour.
-# This is a two-way sync, so anything deleted in the git repo is deleted from cachefly. Excluding .git is self explanatory, the .project file is something created by Aptana Studio which we use heavily (because it's awesome)
+# The if loop is to avoid pinging cachefly even there's been no change to the git repo. If you're concerned about the cachefly files being updated from elsewhere you may wish to change this behaviour.
+# This is a two-way sync, so anything deleted in the git repo is deleted from cachefly. Excluding .git is self explanatory, the .project file is something created by Aptana Studio which we use heavily (because it's awesome).
+# We assume that you're authenticating to your rsync endpoint via public key.
 
   if [[ $OUTPUT != "Already up-to-date." ]]; then
     rsync -avv --delete /home/cacheflyupdater/${REPOS[$k]}/ $CFUSERNAME@ftp.cachefly.com:/web/${TARGETDIR[$k]}/ --exclude .git --exclude .project
